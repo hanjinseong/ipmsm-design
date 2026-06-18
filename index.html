@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>A multi-agent system for IPMSM design optimization via an FEA-AI hybrid approach</title>
+<title>A Multi-Agent System for IPMSM Design Optimization via an FEA-AI Hybrid Approach</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -118,12 +118,21 @@ button{font-family:inherit;cursor:pointer}
 .view{display:none;height:100%}
 .view.active{display:block}
 #view-overview{padding:30px 34px 40px;overflow:auto}
-.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px;flex-wrap:wrap}
-.hero h3{font-size:30px;margin:0 0 8px;font-weight:800;letter-spacing:-.5px;line-height:1.15}
-.hero h3 .grad{background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{margin:0;color:var(--muted);font-size:14px;max-width:640px;line-height:1.6}
-.kpis{display:flex;gap:12px;flex-wrap:wrap}
+.hero{display:flex;flex-direction:column;gap:16px;margin-bottom:26px}
+.hero-title{font-size:clamp(15px,calc(2.35vw - 8px),27px);margin:0;font-weight:800;letter-spacing:-.4px;line-height:1.15;white-space:nowrap}
+.hero-title .grad{background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-body{display:flex;align-items:center;justify-content:space-between;gap:34px}
+.hero-text{flex:1;min-width:0}
+.hero p{margin:0;color:var(--muted);font-size:14px;max-width:560px;line-height:1.6}
+.kpis{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
 .kpi{border:1px solid var(--border);background:var(--panel);border-radius:14px;padding:14px 18px;min-width:120px}
+.hero-figure{flex:none;width:48%;max-width:600px;margin:0;position:relative;border-radius:16px;overflow:hidden;
+  border:1px solid var(--border2);background:#0a0c18;box-shadow:0 26px 64px -30px rgba(0,0,0,.95),0 0 0 1px rgba(139,92,246,.16)}
+.hero-figure img{display:block;width:100%;aspect-ratio:12/5;object-fit:cover;object-position:center}
+.hero-figure::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 52%,rgba(7,8,17,.8) 100%),radial-gradient(130% 90% at 72% 6%,rgba(99,102,241,.18),transparent 58%)}
+.hero-figure figcaption{position:absolute;left:14px;bottom:11px;z-index:2;font-size:11px;color:#d6dbef;font-family:var(--mono);letter-spacing:.02em;text-shadow:0 1px 5px rgba(0,0,0,.9)}
+@media (max-width:880px){.hero-body{flex-direction:column;align-items:stretch}.hero-figure{width:100%;max-width:none}.hero-title{white-space:normal}}
 .kpi b{display:block;font-size:23px;font-weight:800;background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent}
 .kpi span{font-size:11.5px;color:var(--faint);font-weight:500}
 
@@ -318,22 +327,35 @@ button{font-family:inherit;cursor:pointer}
 .mcard b{font-family:var(--mono);font-size:18px;font-weight:800;display:block;margin-top:3px}
 .mcard.fea b{color:var(--amber)}.mcard.ai b{color:var(--green)}.mcard.spd b{color:var(--cyan)}.mcard.save b{color:#fff}
 
-.reason{position:absolute;left:50%;bottom:14px;transform:translateX(-50%) translateY(8px);max-width:80%;background:rgba(139,92,246,.14);border:1px solid rgba(139,92,246,.4);
-  border-radius:11px;padding:9px 14px;font-size:11.5px;color:#e7deff;opacity:0;transition:.35s;z-index:5;font-family:var(--mono);line-height:1.5;text-align:center}
+.reason{position:absolute;left:50%;top:6px;transform:translateX(-50%) translateY(-8px);max-width:62%;background:rgba(40,28,70,.94);border:1px solid rgba(139,92,246,.6);
+  border-radius:11px;padding:7px 13px;font-size:10.5px;color:#e7deff;opacity:0;transition:.35s;z-index:9;font-family:var(--mono);line-height:1.4;text-align:center;box-shadow:0 10px 26px -10px rgba(0,0,0,.8)}
 .reason.show{opacity:1;transform:translateX(-50%)}
 
+/* node icon (FEA/AI) — transparent, enlarged */
+.nicon{margin:2px auto 7px;display:grid;place-items:center;background:transparent}
+.nicon img{display:block}
+.node.fea,.node.ai{min-width:150px}
+.node.fea .nicon img{height:70px;width:auto;max-width:128px;filter:drop-shadow(0 2px 7px rgba(0,0,0,.6))}
+.node.ai .nicon{background:#fff;border-radius:9px;padding:5px 6px;box-shadow:0 5px 14px -5px rgba(0,0,0,.65)}
+.node.ai .nicon img{width:128px;height:auto;max-width:128px}
+/* design-variable figure */
+.dv-fig{opacity:0;transform:translateY(8px);transition:.5s;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.dv-fig.show{opacity:1;transform:none}
+.dv-fig img{width:100%;border-radius:8px;background:#fff;padding:8px;display:block}
+.dv-fig .cap{font-size:11px;color:var(--faint);text-align:center;margin-top:7px;font-family:var(--mono)}
+
 /* motor cross-section view */
-.opt-mid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;flex:1;min-height:300px}
-.opt-mid .router{height:100%;min-height:300px}
-.motor-card{border:1px solid var(--border);background:linear-gradient(180deg,rgba(34,211,238,.06),var(--panel));border-radius:14px;padding:12px 12px 14px;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.opt-mid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;flex:1;min-height:384px}
+.opt-mid .router{height:100%;min-height:384px}
+.motor-card{border:1px solid var(--border);background:linear-gradient(180deg,rgba(34,211,238,.06),var(--panel));border-radius:14px;padding:14px 12px 16px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;overflow:hidden}
 .motor-h{display:flex;align-items:center;gap:8px;width:100%;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
 .motor-h .mbadge{margin-left:auto;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#7de8f8;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3);padding:2px 7px;border-radius:6px}
-#motorSvg{width:100%;max-width:210px;height:auto;margin:6px auto 2px;display:block;filter:drop-shadow(0 10px 24px rgba(0,0,0,.5))}
-.motor-cap{text-align:center;margin-top:4px}
-.motor-cap>b{font-family:var(--mono);font-size:21px;font-weight:800;color:var(--amber);display:block;line-height:1.1}
-.motor-cap>span{font-size:10.5px;color:var(--faint)}
+#motorSvg{width:100%;max-width:240px;height:auto;margin:0 auto;display:block;filter:drop-shadow(0 12px 28px rgba(0,0,0,.55))}
+.motor-cap{text-align:center;margin-top:2px}
+.motor-cap>b{font-family:var(--mono);font-size:27px;font-weight:800;color:var(--amber);display:block;line-height:1.1}
+.motor-cap>span{font-size:12px;color:var(--faint)}
 .mc-chips{display:flex;gap:7px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-.mc-chips span{font-family:var(--mono);font-size:10.5px;color:var(--muted);border:1px solid var(--border);background:rgba(255,255,255,.03);padding:3px 8px;border-radius:7px}
+.mc-chips span{font-family:var(--mono);font-size:11.5px;color:var(--muted);border:1px solid var(--border);background:rgba(255,255,255,.03);padding:4px 9px;border-radius:7px}
 .mc-chips b{color:#cfe1ff;font-weight:600}
 
 /* language toggle */
@@ -428,16 +450,22 @@ button{font-family:inherit;cursor:pointer}
       <!-- ===== OVERVIEW ===== -->
       <div class="view active" id="view-overview">
         <div class="hero">
-          <div>
-            <h3 data-i18n-html="hero.h">A multi-agent system for <span class="grad">IPMSM design optimization</span><br>via an FEA-AI hybrid approach</h3>
-            <p data-i18n-html="hero.p">세 개의 LLM 에이전트가 협업합니다. <b>Design</b>은 채팅으로 최적화 문제를 정의하고,
-            <b>Training</b>은 리샘플링으로 학습 데이터를 채워 대리모델(surrogate)을 학습하며,
-            <b>Optimization</b>은 LLM이 switching threshold를 정해 매 평가를 FEA로 풀지 AI로 풀지 선택합니다.</p>
-          </div>
-          <div class="kpis">
-            <div class="kpi"><b>6.8×</b><span data-i18n="kpi.1">FEA-only 대비 가속</span></div>
-            <div class="kpi"><b>38</b><span data-i18n="kpi.2">FEA 호출 (vs 150)</span></div>
-            <div class="kpi"><b>117.6 W</b><span data-i18n="kpi.3">최적 철손</span></div>
+          <h3 class="hero-title" data-i18n-html="hero.h">A Multi-Agent System for <span class="grad">IPMSM Design Optimization</span> via an FEA-AI Hybrid Approach</h3>
+          <div class="hero-body">
+            <div class="hero-text">
+              <p data-i18n-html="hero.p">세 개의 LLM 에이전트가 협업합니다. <b>Design</b>은 채팅으로 최적화 문제를 정의하고,
+              <b>Training</b>은 리샘플링으로 학습 데이터를 채워 대리모델(surrogate)을 학습하며,
+              <b>Optimization</b>은 LLM이 switching threshold를 정해 매 평가를 FEA로 풀지 AI로 풀지 선택합니다.</p>
+              <div class="kpis">
+                <div class="kpi"><b>6.8×</b><span data-i18n="kpi.1">FEA-only 대비 가속</span></div>
+                <div class="kpi"><b>38</b><span data-i18n="kpi.2">FEA 호출 (vs 150)</span></div>
+                <div class="kpi"><b>117.6 W</b><span data-i18n="kpi.3">최적 철손</span></div>
+              </div>
+            </div>
+            <figure class="hero-figure">
+              <img src="motor_hero.jpg" alt="IPMSM motor cutaway" loading="lazy">
+              <figcaption data-i18n="hero.fig">IPMSM 절개 단면 · FEA-AI 설계 대상</figcaption>
+            </figure>
           </div>
         </div>
 
@@ -548,6 +576,7 @@ button{font-family:inherit;cursor:pointer}
                     <div class="dv" data-dv><div class="nm">Rt_Dout</div><div class="track"><i style="left:8%;right:20%"></i><u style="left:40%"></u></div><div class="rg">80.0 – 86.0 mm</div></div>
                     <div class="dv" data-dv><div class="nm">small_void_center</div><div class="track"><i style="left:22%;right:12%"></i><u style="left:70%"></u></div><div class="rg" data-i18n="ds.dv.illus">illustrative</div></div>
                     <div class="dv" data-dv style="color:var(--faint)"><div class="nm" data-i18n="ds.dv.more">+ 8 more</div><div class="track"><i style="left:4%;right:4%;opacity:.4"></i></div><div class="rg" data-i18n="ds.dv.tot">12-dim total</div></div>
+                    <div class="dv-fig" id="dvFig"><img src="design_variables.svg" alt="design variables layout"><div class="cap" data-i18n="ds.dv.fig">설계 변수 구성 (형상 파라미터)</div></div>
                   </div>
                 </div>
                 <div class="spec-card" id="sc-cst">
@@ -600,9 +629,9 @@ button{font-family:inherit;cursor:pointer}
               <div class="opt-grid">
                 <div class="tau-card">
                   <div class="lab"><span data-i18n="op.tau.lab1">switching threshold</span><b data-i18n="op.tau.lab2">τ (총 σ · W)</b></div>
-                  <div class="tau-val" id="tauVal">18 W</div>
+                  <div class="tau-val" id="tauVal">19 W</div>
                   <div class="tau-slider">
-                    <input type="range" id="tauSlider" min="12" max="35" step="0.5" value="18">
+                    <input type="range" id="tauSlider" min="12" max="35" step="0.5" value="19">
                     <div class="sc"><span data-i18n="op.tau.lo">12 W (FEA 多)</span><span data-i18n="op.tau.hi">35 W (AI 多)</span></div>
                   </div>
                   <span class="llm-chip" id="llmChip" data-i18n-html="op.llm"><span class="led"></span> LLM controller</span>
@@ -613,8 +642,8 @@ button{font-family:inherit;cursor:pointer}
                   <svg class="wires" id="wires"></svg>
                   <div class="node pop"  id="n-pop"><div class="t">GA Population</div><div class="s">pop 25 · gen 30</div></div>
                   <div class="node gate" id="n-gate"><div class="t">Gate</div><div class="s">σ vs τ</div><div class="gatebar"><u id="gateMark" style="left:25%"></u></div></div>
-                  <div class="node fea"  id="n-fea"><div class="t">FEA · Maxwell</div><div class="s" data-i18n="op.n.fea.s">~144 s · 정확</div><div class="cnt" id="cFea">0</div></div>
-                  <div class="node ai"   id="n-ai"><div class="t">AI surrogate</div><div class="s" data-i18n="op.n.ai.s">~0.01 s · 근사</div><div class="cnt" id="cAi">0</div></div>
+                  <div class="node fea"  id="n-fea"><div class="nicon"><img src="fea_icon.png" alt="FEA field plot"></div><div class="t">FEA · Maxwell</div><div class="s" data-i18n="op.n.fea.s">~144 s · 정확</div><div class="cnt" id="cFea">0</div></div>
+                  <div class="node ai"   id="n-ai"><div class="nicon"><img src="AI.svg" alt="AI ensemble"></div><div class="t">AI surrogate</div><div class="s" data-i18n="op.n.ai.s">~0.01 s · 근사</div><div class="cnt" id="cAi">0</div></div>
                   <div class="node sur"  id="n-sur"><div class="t" data-i18n="op.n.sur.t">Surrogate 갱신</div><div class="s">active learning ↻</div></div>
                   <div class="reason" id="reason"></div>
                 </div>
@@ -670,9 +699,9 @@ const I18N={
   'side.new':`새 세션`,'side.ws':`워크스페이스`,'side.ag':`에이전트`,
   'nav.ov.t':`개요`,'nav.ov.s':`시스템 파이프라인`,'nav.de.t':`설계 에이전트`,'nav.de.s':`문제 정의 · chat`,
   'nav.tr.t':`학습 에이전트`,'nav.tr.s':`리샘플링 · surrogate`,'nav.op.t':`최적화 에이전트`,'nav.op.s':`FEA ⇄ AI switching`,
-  'hero.h':`A multi-agent system for <span class="grad">IPMSM design optimization</span><br>via an FEA-AI hybrid approach`,
+  'hero.h':`A Multi-Agent System for <span class="grad">IPMSM Design Optimization</span> via an FEA-AI Hybrid Approach`,
   'hero.p':`세 개의 LLM 에이전트가 협업합니다. <b>Design</b>은 채팅으로 최적화 문제를 정의하고, <b>Training</b>은 리샘플링으로 학습 데이터를 채워 대리모델(surrogate)을 학습하며, <b>Optimization</b>은 LLM이 switching threshold를 정해 매 평가를 FEA로 풀지 AI로 풀지 선택합니다.`,
-  'kpi.1':`FEA-only 대비 가속`,'kpi.2':`FEA 호출 (vs 150)`,'kpi.3':`최적 철손`,
+  'kpi.1':`FEA-only 대비 가속`,'kpi.2':`FEA 호출 (vs 150)`,'kpi.3':`최적 철손`,'hero.fig':`IPMSM 절개 단면 · FEA-AI 설계 대상`,
   'sc.de.t':`문제 정의 에이전트`,'sc.de.p':`사용자와 <b>채팅</b>하며 자연어를 목적함수·설계변수·제약조건으로 구조화합니다.`,
   'sc.tr.t':`리샘플링 · 학습 에이전트`,'sc.tr.p':`실패·희박 영역을 찾아 <b>리샘플링</b>으로 유효 샘플을 채우고 deep ensemble을 학습합니다.`,
   'sc.op.t':`스위칭 최적화 에이전트`,'sc.op.p':`LLM이 <b>switching threshold τ</b>를 정해, 후보마다 비싼 FEA 대신 빠른 AI를 쓸지 결정합니다.`,
@@ -682,7 +711,7 @@ const I18N={
   'rel.3.t':`🧠 LLM 제어`,'rel.3.p':`매 라운드 calibration ρ = |오차|/σ를 보고 τ를 조정. ρ&gt;1(과신)이면 τ를 낮춰 FEA를 더, ρ&lt;1이면 τ를 높여 AI를 더 씁니다.`,
   'cmp.ph':`메시지를 입력하거나 위 제안을 눌러보세요…`,'ctrl.replay':`리플레이`,'ctrl.pause':`일시정지`,'ctrl.resume':`이어가기`,
   'ds.obj.h':`Objective · 목적함수`,'ds.obj.min':`minimize`,'ds.obj.name':`철손 (iron loss)`,
-  'ds.dv.h':`Design variables · 설계변수`,'ds.dv.more':`+ 8 more`,'ds.dv.tot':`12-dim total`,'ds.dv.illus':`illustrative`,
+  'ds.dv.h':`Design variables · 설계변수`,'ds.dv.more':`+ 8 more`,'ds.dv.tot':`12-dim total`,'ds.dv.illus':`illustrative`,'ds.dv.fig':`설계 변수 구성 (형상 파라미터)`,
   'ds.cst.h':`Constraints · 제약조건`,
   'ds.cst.1':`<span class="ck">✓</span> 형상 유효성 <code>AEDT ValidateDesign = OK</code>`,
   'ds.cst.2':`<span class="ck">✓</span> 평균 토크 <code>mean_torque ≥ 150 Nm</code>`,
@@ -698,7 +727,7 @@ const I18N={
   'top.de.t':`설계 에이전트`,'top.de.s':`채팅으로 최적화 문제를 정의합니다`,'top.tr.t':`학습 에이전트`,'top.tr.s':`리샘플링으로 학습 데이터를 채웁니다`,'top.op.t':`최적화 에이전트`,'top.op.s':`LLM이 τ를 정해 FEA/AI를 선택합니다`,
   'viz.de':`문제 정의`,'viz.tr':`적응형 리샘플링`,'viz.op':`FEA ⇄ AI 스위칭`,
   'tr.r0.l':`초기 LHS 샘플링`,'tr.r0.s':`resampling 전`,'tr.r1.l':`Refinement 1`,'tr.r1.s':`실패·희박 영역 보강`,'tr.r2.l':`Refinement 2`,'tr.r2.s':`manifold 집중 샘플링`,'tr.r3.l':`Refinement 3`,'tr.r3.s':`목표 100 유효샘플 도달`,
-  'op.reason1':`LLM: rho≈1.5 &gt; 1 (over-confident)<br>→ τ 18 → 14 W 인하, FEA↑`,'op.reason2':`LLM: rho≈0.9 &lt; 1 (well-calibrated)<br>→ τ 14 → 22 W 인상, AI↑`,
+  'op.reason1':`LLM: rho≈1.5 &gt; 1 (over-confident)<br>→ τ 19 → 16 W 인하, FEA↑`,'op.reason2':`LLM: rho≈0.9 &lt; 1 (well-calibrated)<br>→ τ 16 → 23 W 인상, AI↑`,
   'msg.chip':`지금 재생 중인 시나리오를 보세요 — 오른쪽 시각화가 이 단계를 그대로 보여줍니다. 처음부터 보려면 <b>리플레이</b>를 눌러주세요.`,
   'msg.send1':`데모 콘솔이라 입력은 시나리오 재생으로 안내돼요. 오른쪽 애니메이션이 <b>`,'msg.send2':`</b> 원리를 보여줍니다. <b>리플레이</b>로 다시 볼 수 있어요.`,
   'mech.de':`문제 정의`,'mech.tr':`리샘플링`,'mech.op':`FEA⇄AI 스위칭`,
@@ -735,9 +764,9 @@ const I18N={
   'side.new':`New session`,'side.ws':`Workspace`,'side.ag':`Agents`,
   'nav.ov.t':`Overview`,'nav.ov.s':`System pipeline`,'nav.de.t':`Design Agent`,'nav.de.s':`problem definition · chat`,
   'nav.tr.t':`Training Agent`,'nav.tr.s':`resampling · surrogate`,'nav.op.t':`Optimization Agent`,'nav.op.s':`FEA ⇄ AI switching`,
-  'hero.h':`A multi-agent system for <span class="grad">IPMSM design optimization</span><br>via an FEA-AI hybrid approach`,
+  'hero.h':`A Multi-Agent System for <span class="grad">IPMSM Design Optimization</span> via an FEA-AI Hybrid Approach`,
   'hero.p':`Three LLM agents collaborate. <b>Design</b> defines the optimization problem by chatting, <b>Training</b> fills the dataset via resampling and trains a surrogate, and <b>Optimization</b> lets the LLM set a switching threshold to decide—per evaluation—whether to solve with FEA or AI.`,
-  'kpi.1':`vs FEA-only speedup`,'kpi.2':`FEA calls (vs 150)`,'kpi.3':`best iron loss`,
+  'kpi.1':`vs FEA-only speedup`,'kpi.2':`FEA calls (vs 150)`,'kpi.3':`best iron loss`,'hero.fig':`IPMSM cutaway · FEA-AI design target`,
   'sc.de.t':`Problem-Definition Agent`,'sc.de.p':`Chats with you and structures natural language into objective, design variables and constraints.`,
   'sc.tr.t':`Resampling & Training Agent`,'sc.tr.p':`Finds fail-prone & sparse regions, fills valid samples via <b>resampling</b>, then trains a deep ensemble.`,
   'sc.op.t':`Switching Optimization Agent`,'sc.op.p':`The LLM sets a <b>switching threshold τ</b> to decide, per candidate, whether to use cheap AI instead of costly FEA.`,
@@ -747,7 +776,7 @@ const I18N={
   'rel.3.t':`🧠 LLM control`,'rel.3.p':`Each round the LLM reads calibration ρ = |err|/σ and adjusts τ. ρ&gt;1 (over-confident) → lower τ for more FEA; ρ&lt;1 → raise τ for more AI.`,
   'cmp.ph':`Type a message or tap a suggestion above…`,'ctrl.replay':`Replay`,'ctrl.pause':`Pause`,'ctrl.resume':`Resume`,
   'ds.obj.h':`Objective`,'ds.obj.min':`minimize`,'ds.obj.name':`iron loss`,
-  'ds.dv.h':`Design variables`,'ds.dv.more':`+ 8 more`,'ds.dv.tot':`12-dim total`,'ds.dv.illus':`illustrative`,
+  'ds.dv.h':`Design variables`,'ds.dv.more':`+ 8 more`,'ds.dv.tot':`12-dim total`,'ds.dv.illus':`illustrative`,'ds.dv.fig':`Design-variable layout (geometry parameters)`,
   'ds.cst.h':`Constraints`,
   'ds.cst.1':`<span class="ck">✓</span> geometry valid <code>AEDT ValidateDesign = OK</code>`,
   'ds.cst.2':`<span class="ck">✓</span> mean torque <code>mean_torque ≥ 150 Nm</code>`,
@@ -763,7 +792,7 @@ const I18N={
   'top.de.t':`Design Agent`,'top.de.s':`Defines the optimization problem through chat`,'top.tr.t':`Training Agent`,'top.tr.s':`Fills training data via resampling`,'top.op.t':`Optimization Agent`,'top.op.s':`LLM sets τ to choose FEA vs AI`,
   'viz.de':`Problem Definition`,'viz.tr':`Adaptive Resampling`,'viz.op':`FEA ⇄ AI Switching`,
   'tr.r0.l':`Initial LHS sampling`,'tr.r0.s':`before resampling`,'tr.r1.l':`Refinement 1`,'tr.r1.s':`fill fail-prone & sparse`,'tr.r2.l':`Refinement 2`,'tr.r2.s':`focused manifold sampling`,'tr.r3.l':`Refinement 3`,'tr.r3.s':`reached 100 valid samples`,
-  'op.reason1':`LLM: rho≈1.5 &gt; 1 (over-confident)<br>→ τ 18 → 14 W, more FEA`,'op.reason2':`LLM: rho≈0.9 &lt; 1 (well-calibrated)<br>→ τ 14 → 22 W, more AI`,
+  'op.reason1':`LLM: rho≈1.5 &gt; 1 (over-confident)<br>→ τ 19 → 16 W, more FEA`,'op.reason2':`LLM: rho≈0.9 &lt; 1 (well-calibrated)<br>→ τ 16 → 23 W, more AI`,
   'msg.chip':`Watch the scenario playing — the visualization on the right shows this step. Press <b>Replay</b> to watch from the start.`,
   'msg.send1':`This is a demo console, so input maps to scenario playback. The animation on the right shows the <b>`,'msg.send2':`</b> principle. Press <b>Replay</b> to watch again.`,
   'mech.de':`problem definition`,'mech.tr':`resampling`,'mech.op':`FEA⇄AI switching`,
@@ -861,25 +890,27 @@ function markStep(i){
 }
 
 /* ============================================================== scene runner */
-async function renderStep(step,tok){
+const PACE={design:0.5,training:1,optimization:1};  // per-scene speed (smaller = faster)
+async function renderStep(step,tok,pace){
+  pace=pace||1;
   const txt=t(step.key);
   if(step.who==='user'){addBubble('user',txt);}
   else{
-    const tp=addTyping();await sleep(560,tok);
+    const tp=addTyping();await sleep(520*pace,tok);
     if(tok!==player.token){tp.remove();return;}
     tp.remove();addBubble('agent',txt);
   }
   if(step.after)step.after();
 }
 async function runScene(agent,tok){
-  const scene=SCENES[agent];
+  const scene=SCENES[agent];const pace=PACE[agent]||1;
   buildStepper(scene.steps.length);
   for(let i=0;i<scene.steps.length;i++){
     if(tok!==player.token)return;
     markStep(i);
-    await renderStep(scene.steps[i],tok);
+    await renderStep(scene.steps[i],tok,pace);
     if(tok!==player.token)return;
-    await sleep(scene.steps[i].dur??computeDur(t(scene.steps[i].key)),tok);
+    await sleep((scene.steps[i].dur??computeDur(t(scene.steps[i].key)))*pace,tok);
   }
   if(tok===player.token)markStep(scene.steps.length);
 }
@@ -922,6 +953,7 @@ function resetDesign(){
   $('#objname').style.opacity=.4;$('#objtag').style.opacity=0;
   $('#op-i').textContent='— A';$('#op-b').textContent='— °';$('#op-r').textContent='— rpm';
   $$('#dvbody .dv').forEach(d=>d.classList.remove('show'));
+  {const f=$('#dvFig');if(f)f.classList.remove('show');}
   $$('#cstbody .cst').forEach(d=>d.classList.remove('show'));
   $('#readybtn').classList.remove('show');
 }
@@ -943,7 +975,8 @@ function fillObjective(){
 }
 function fillVars(){
   $('#sc-dv').classList.add('on');flyToken('St_Dout · Bs0 · …','#sc-dv');
-  $$('#dvbody .dv').forEach((d,i)=>setTimeout(()=>d.classList.add('show'),i*160));
+  $$('#dvbody .dv').forEach((d,i)=>setTimeout(()=>d.classList.add('show'),i*130));
+  setTimeout(()=>{const f=$('#dvFig');if(f)f.classList.add('show');},620);
 }
 function fillConstraints(){
   $('#sc-cst').classList.add('on');flyToken('valid · torque≥150','#sc-cst');
@@ -980,43 +1013,46 @@ function drawDS(zonesOnly){
   if(!zonesOnly){
     DS.pts.forEach(p=>{
       const c=p.fail?'#fb6f84':(p.fresh?'#a98bff':'#34d399');
-      const r=p.fresh?4.2:3.2;
-      s+=`<circle cx="${dsX(p.x)}" cy="${dsY(p.y)}" r="${r}" fill="${c}" opacity="${p.fail?.55:.95}">`;
-      if(p.fresh)s+=`<animate attributeName="r" values="0;6;${r}" dur="0.5s"/>`;
+      const r=p.fresh?3.4:2.5;
+      s+=`<circle cx="${dsX(p.x)}" cy="${dsY(p.y)}" r="${r}" fill="${c}" opacity="${p.fail?.5:.95}">`;
+      if(p.fresh)s+=`<animate attributeName="r" values="0;5;${r}" dur="0.5s"/>`;
       s+=`</circle>`;
     });
   }
   svg.innerHTML=s;
 }
 function setGauge(p){$('#gauge').style.setProperty('--pct',p);}
-function addBatch(n,opts){
-  // opts.target: if true, sample mostly inside zones (resample). else uniform.
+function _ptInZone(){ // a valid point: strictly inside one manifold ellipse
+  const z=ZONES[Math.floor(Math.random()*ZONES.length)];
+  const u=Math.sqrt(Math.random()),a=Math.random()*2*Math.PI;
+  return {x:clamp(z.x+z.rx*0.92*u*Math.cos(a),.03,.97),y:clamp(z.y+z.ry*0.92*u*Math.sin(a),.03,.97)};
+}
+function _ptOutZone(){ // an infeasible point: outside both manifolds
+  for(let k=0;k<40;k++){const x=rand(.04,.96),y=rand(.04,.96);if(!inZone(x,y))return {x,y};}
+  return {x:.06,y:rand(.05,.95)};
+}
+// place EXACTLY `green` valid (inside manifold) + `red` infeasible (outside) points
+// => plotted green/(green+red) == stated batch success rate; cumulative green == counter
+function addBatch(green,red){
   DS.pts.forEach(p=>p.fresh=false);
-  for(let i=0;i<n;i++){
-    let x,y;
-    if(opts.target){
-      const z=ZONES[Math.floor(Math.random()*ZONES.length)];
-      x=clamp(z.x+gauss(0,z.rx*.6),.04,.96);y=clamp(z.y+gauss(0,z.ry*.6),.04,.96);
-    }else{x=rand(.05,.95);y=rand(.05,.95);}
-    const fail=!inZone(x,y);
-    DS.pts.push({x,y,fail,fresh:true});
-    if(!fail)DS.valid++;DS.total++;
+  const flags=[];for(let i=0;i<green;i++)flags.push(true);for(let i=0;i<red;i++)flags.push(false);
+  for(const ok of flags){
+    const p= ok?_ptInZone():_ptOutZone();
+    DS.pts.push({x:p.x,y:p.y,fail:!ok,fresh:true});
+    if(ok)DS.valid++; DS.total++;
   }
   drawDS(false);
 }
 function trainRound(stage){
-  // stage 0 initial, 1..3 refinements. Numbers mirror the real study.
-  const real=[{lbl:'초기 LHS 샘플링',sub:'resampling 전',valid:28,rate:28,n:24,target:false},
-              {lbl:'Refinement 1',sub:'실패·희박 영역 보강',valid:52,rate:60,n:14,target:true},
-              {lbl:'Refinement 2',sub:'manifold 집중 샘플링',valid:84,rate:71,n:13,target:true},
-              {lbl:'Refinement 3',sub:'목표 100 유효샘플 도달',valid:100,rate:84,n:14,target:true}];
-  const r=real[stage];
+  // exact counts: plotted ratio == chat rate; cumulative green = 28/52/84/100 (real study)
+  const ROUNDS=[{green:28,red:72,rate:28},{green:24,red:16,rate:60},{green:32,red:13,rate:71},{green:16,red:3,rate:84}];
+  const r=ROUNDS[stage];
   if(stage>0){DS.refine=stage;$('#refineCount').textContent=stage;}
-  addBatch(r.n,{target:r.target});
+  const prev=DS.valid;
+  addBatch(r.green,r.red);
   setGauge(r.rate);$('#gaugeVal').textContent=r.rate+'%';
   $('#roundLabel').textContent=t('tr.r'+stage+'.l');$('#roundSub').textContent=t('tr.r'+stage+'.s');
-  // animate valid counter
-  animNum('#validCount',parseInt($('#validCount').textContent)||0,r.valid,700);
+  animNum('#validCount',prev,DS.valid,700); // counter == actual green dots
 }
 function animNum(sel,from,to,ms){
   const el=$(sel);let t0=null;
@@ -1032,8 +1068,8 @@ function trainSurrogate(){
 }
 
 /* ============================================================== OPTIMIZATION viz */
-const TAU_MIN=12,TAU_MAX=35,ALEO_FLOOR=16; // switching metric = total predictive std (W); aleatoric (FEA-noise) floor
-const OPT={raf:null,active:false,tokens:[],last:0,spawn:0,tau:18,baseUnc:30,
+const TAU_MIN=12,TAU_MAX=35,ALEO_FLOOR=14; // switching metric = total predictive std (W); aleatoric (FEA-noise) floor
+const OPT={raf:null,active:false,tokens:[],last:0,spawn:0,tau:19,baseUnc:20,
   fea:0,ai:0,conv:[],loss:152,anchors:{}};
 
 /* ---- motor cross-section (morphs as it optimizes) ---- */
@@ -1087,7 +1123,7 @@ function anchorPx(){
 }
 function placeNodes(){
   const set=(id,fx,fy)=>{const e=$(id);e.style.left=fx*100+'%';e.style.top=fy*100+'%';};
-  set('#n-pop',.12,.50);set('#n-gate',.45,.50);set('#n-fea',.82,.24);set('#n-ai',.82,.76);set('#n-sur',.45,.90);
+  set('#n-pop',.155,.50);set('#n-gate',.45,.50);set('#n-fea',.78,.24);set('#n-ai',.78,.76);set('#n-sur',.45,.90);
   drawWires();
 }
 function drawWires(){
@@ -1103,7 +1139,7 @@ function drawWires(){
 }
 function resetOpt(){
   OPT.tokens.forEach(t=>t.el&&t.el.remove());
-  OPT.tokens=[];OPT.fea=0;OPT.ai=0;OPT.conv=[];OPT.loss=152;OPT.tau=parseFloat($('#tauSlider').value)||18;OPT.baseUnc=30;
+  OPT.tokens=[];OPT.fea=0;OPT.ai=0;OPT.conv=[];OPT.loss=152;OPT.tau=parseFloat($('#tauSlider').value)||19;OPT.baseUnc=20;
   $('#cFea').textContent='0';$('#cAi').textContent='0';
   $('#mFea').textContent='0';$('#mAi').textContent='0';$('#mShare').textContent='0%';$('#mSave').textContent='0 s';
   $('#convVal').textContent='—';$('#convSvg').innerHTML='';
@@ -1132,7 +1168,7 @@ function llmAdjust(newTau,reasonHtml){
 function optStart(){if(OPT.active)return;OPT.active=true;OPT.last=performance.now();OPT.spawn=0;OPT.raf=requestAnimationFrame(optLoop);}
 function optStop(){OPT.active=false;if(OPT.raf){cancelAnimationFrame(OPT.raf);OPT.raf=null;}}
 function spawnToken(){
-  const unc=clamp(gauss(OPT.baseUnc,5),4,55);
+  const unc=clamp(gauss(OPT.baseUnc,5.5),3,55);
   const a=anchorPx();
   const el=document.createElement('div');el.className='particle';
   el.textContent=unc.toFixed(0)+'W';
@@ -1147,11 +1183,11 @@ function optLoop(now){
   if(Math.abs(motorProgress-_motorBuilt)>0.012)buildMotor();
   spinMotor();
   OPT.spawn+=dt;
-  if(OPT.spawn>620){OPT.spawn=0;if(OPT.tokens.length<14)spawnToken();}
+  if(OPT.spawn>340){OPT.spawn=0;if(OPT.tokens.length<20)spawnToken();}
   const a=anchorPx();
   OPT.tokens.forEach(tk=>{
     if(tk.done)return;
-    tk.t+=dt/950;
+    tk.t+=dt/640;
     if(tk.t>=1){
       tk.t=0;tk.seg++;
       // decide route at gate
@@ -1180,7 +1216,7 @@ function el_color(el,fea){
 }
 function feaResult(unc){
   // FEA fine-tunes surrogate -> epistemic shrinks, total std falls toward aleatoric (FEA-noise) floor
-  OPT.baseUnc=clamp(OPT.baseUnc-0.55,ALEO_FLOOR,40);
+  OPT.baseUnc=clamp(OPT.baseUnc-0.9,ALEO_FLOOR,40);
   OPT.loss=clamp(OPT.loss-rand(1.4,3.6),117.4,160);
   OPT.conv.push(OPT.loss);
   motorTargetProgress=clamp((152-OPT.loss)/(152-117.6),0,1);
@@ -1234,11 +1270,11 @@ const SCENES={
   ]},
   optimization:{steps:[
     {who:'user',key:'op.s1'},
-    {who:'agent',key:'op.s2',after:()=>{setTau(18,true);optStart();}},
+    {who:'agent',key:'op.s2',after:()=>{setTau(19,true);optStart();}},
     {who:'agent',key:'op.s3'},
     {who:'agent',key:'op.s4'},
-    {who:'agent',key:'op.s5',after:()=>llmAdjust(14,t('op.reason1'))},
-    {who:'agent',key:'op.s6',after:()=>llmAdjust(22,t('op.reason2'))},
+    {who:'agent',key:'op.s5',after:()=>llmAdjust(16,t('op.reason1'))},
+    {who:'agent',key:'op.s6',after:()=>llmAdjust(23,t('op.reason2'))},
     {who:'agent',key:'op.s7'},
     {who:'agent',key:'op.s8'},
   ]},
