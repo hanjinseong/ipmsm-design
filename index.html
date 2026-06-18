@@ -201,6 +201,12 @@ button{font-family:inherit;cursor:pointer}
 .sendbtn{width:36px;height:36px;border-radius:10px;border:0;background:var(--accent);display:grid;place-items:center;flex:none;transition:.15s}
 .sendbtn:hover{transform:scale(1.06)}
 .sendbtn svg{width:17px;height:17px}
+/* disabled (LLM not wired) — grayscale, non-interactive */
+.inputbar.disabled{border-color:var(--border);background:rgba(255,255,255,.02)}
+.inputbar.disabled input{color:var(--faint);cursor:not-allowed}
+.inputbar.disabled input::placeholder{color:var(--faint)}
+.sendbtn[disabled]{background:rgba(255,255,255,.07);color:var(--faint);cursor:not-allowed;pointer-events:none}
+.sendbtn[disabled]:hover{transform:none}
 
 /* Viz column */
 .viz-col{display:flex;flex-direction:column;min-height:0;background:
@@ -336,8 +342,7 @@ button{font-family:inherit;cursor:pointer}
 .nicon img{display:block}
 .node.fea,.node.ai{min-width:150px}
 .node.fea .nicon img{height:70px;width:auto;max-width:128px;filter:drop-shadow(0 2px 7px rgba(0,0,0,.6))}
-.node.ai .nicon{background:#fff;border-radius:9px;padding:5px 6px;box-shadow:0 5px 14px -5px rgba(0,0,0,.65)}
-.node.ai .nicon img{width:128px;height:auto;max-width:128px}
+.node.ai .nicon img{width:134px;height:auto;max-width:134px;filter:drop-shadow(0 2px 9px rgba(52,211,153,.3))}
 /* design-variable figure */
 .dv-fig{opacity:0;transform:translateY(8px);transition:.5s;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .dv-fig.show{opacity:1;transform:none}
@@ -523,11 +528,10 @@ button{font-family:inherit;cursor:pointer}
         <div class="chat-col">
           <div class="chat" id="chat"></div>
           <div class="composer">
-            <div class="chips" id="chips"></div>
-            <div class="inputbar">
-              <input id="userInput" data-i18n-ph="cmp.ph" placeholder="메시지를 입력하거나 위 제안을 눌러보세요…" autocomplete="off"/>
-              <button class="sendbtn" onclick="onSend()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <div class="inputbar disabled">
+              <input id="userInput" data-i18n-ph="cmp.ph" placeholder="데모 콘솔 · 시나리오 자동 재생 (채팅 비활성화)" autocomplete="off" disabled/>
+              <button class="sendbtn" type="button" disabled aria-disabled="true" tabindex="-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
               </button>
             </div>
           </div>
@@ -643,7 +647,7 @@ button{font-family:inherit;cursor:pointer}
                   <div class="node pop"  id="n-pop"><div class="t">GA Population</div><div class="s">pop 25 · gen 30</div></div>
                   <div class="node gate" id="n-gate"><div class="t">Gate</div><div class="s">σ vs τ</div><div class="gatebar"><u id="gateMark" style="left:25%"></u></div></div>
                   <div class="node fea"  id="n-fea"><div class="nicon"><img src="fea_icon.png" alt="FEA field plot"></div><div class="t">FEA · Maxwell</div><div class="s" data-i18n="op.n.fea.s">~144 s · 정확</div><div class="cnt" id="cFea">0</div></div>
-                  <div class="node ai"   id="n-ai"><div class="nicon"><img src="AI.svg" alt="AI ensemble"></div><div class="t">AI surrogate</div><div class="s" data-i18n="op.n.ai.s">~0.01 s · 근사</div><div class="cnt" id="cAi">0</div></div>
+                  <div class="node ai"   id="n-ai"><div class="nicon"><img src="ai_surrogate.svg" alt="AI surrogate neural net"></div><div class="t">AI surrogate</div><div class="s" data-i18n="op.n.ai.s">~0.01 s · 근사</div><div class="cnt" id="cAi">0</div></div>
                   <div class="node sur"  id="n-sur"><div class="t" data-i18n="op.n.sur.t">Surrogate 갱신</div><div class="s">active learning ↻</div></div>
                   <div class="reason" id="reason"></div>
                 </div>
@@ -709,7 +713,7 @@ const I18N={
   'rel.1.t':`🎯 단일 목적`,'rel.1.p':`운전점 140 A / 120° / 1000 rpm에서 <b>철손(iron loss, W) 최소화</b>. 평균 토크 ≥ 150 Nm, 형상 유효성(AEDT ValidateDesign)을 제약으로 둡니다.`,
   'rel.2.t':`🔁 능동 학습`,'rel.2.p':`최적화 중 FEA로 푼 결과가 다시 surrogate를 fine-tuning. 평가가 쌓일수록 불확실성이 줄어 AI 비중이 커집니다.`,
   'rel.3.t':`🧠 LLM 제어`,'rel.3.p':`매 라운드 calibration ρ = |오차|/σ를 보고 τ를 조정. ρ&gt;1(과신)이면 τ를 낮춰 FEA를 더, ρ&lt;1이면 τ를 높여 AI를 더 씁니다.`,
-  'cmp.ph':`메시지를 입력하거나 위 제안을 눌러보세요…`,'ctrl.replay':`리플레이`,'ctrl.pause':`일시정지`,'ctrl.resume':`이어가기`,
+  'cmp.ph':`데모 콘솔 · 시나리오 자동 재생 (채팅 비활성화)`,'ctrl.replay':`리플레이`,'ctrl.pause':`일시정지`,'ctrl.resume':`이어가기`,
   'ds.obj.h':`Objective · 목적함수`,'ds.obj.min':`minimize`,'ds.obj.name':`철손 (iron loss)`,
   'ds.dv.h':`Design variables · 설계변수`,'ds.dv.more':`+ 8 more`,'ds.dv.tot':`12-dim total`,'ds.dv.illus':`illustrative`,'ds.dv.fig':`설계 변수 구성 (형상 파라미터)`,
   'ds.cst.h':`Constraints · 제약조건`,
@@ -774,7 +778,7 @@ const I18N={
   'rel.1.t':`🎯 Single objective`,'rel.1.p':`Minimize <b>iron loss (W)</b> at 140 A / 120° / 1000 rpm. Mean torque ≥ 150 Nm and geometry validity (AEDT ValidateDesign) are constraints.`,
   'rel.2.t':`🔁 Active learning`,'rel.2.p':`FEA results during optimization fine-tune the surrogate. As evaluations accumulate, uncertainty drops and the AI share grows.`,
   'rel.3.t':`🧠 LLM control`,'rel.3.p':`Each round the LLM reads calibration ρ = |err|/σ and adjusts τ. ρ&gt;1 (over-confident) → lower τ for more FEA; ρ&lt;1 → raise τ for more AI.`,
-  'cmp.ph':`Type a message or tap a suggestion above…`,'ctrl.replay':`Replay`,'ctrl.pause':`Pause`,'ctrl.resume':`Resume`,
+  'cmp.ph':`Demo console · scenario auto-play (chat disabled)`,'ctrl.replay':`Replay`,'ctrl.pause':`Pause`,'ctrl.resume':`Resume`,
   'ds.obj.h':`Objective`,'ds.obj.min':`minimize`,'ds.obj.name':`iron loss`,
   'ds.dv.h':`Design variables`,'ds.dv.more':`+ 8 more`,'ds.dv.tot':`12-dim total`,'ds.dv.illus':`illustrative`,'ds.dv.fig':`Design-variable layout (geometry parameters)`,
   'ds.cst.h':`Constraints`,
@@ -1282,7 +1286,8 @@ const SCENES={
 
 /* ============================================================== chips */
 function setChips(agent){
-  const c=$('#chips');c.innerHTML='';
+  const c=$('#chips');if(!c)return;   // suggestion chips removed (LLM not wired in this demo)
+  c.innerHTML='';
   ((CHIPS_ALL[lang]||CHIPS_ALL.ko)[agent]||[]).forEach(txt=>{
     const b=document.createElement('button');b.className='chip';b.textContent=txt;
     b.onclick=()=>{addBubble('user',txt);scrollChat();
